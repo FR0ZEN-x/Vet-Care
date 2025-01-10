@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Veterinary Health Analysis System
 
 An advanced veterinary health analysis system that provides comprehensive health assessments and recommendations for various animal species.
@@ -18,3 +19,6 @@ An advanced veterinary health analysis system that provides comprehensive health
 ## Setup
 
 1. Create virtual environment:
+=======
+# Vet-Care
+>>>>>>> 86fafd3ff96854cb2d26f4304b283d0bf40a5790
