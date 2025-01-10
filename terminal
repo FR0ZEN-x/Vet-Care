@@ -1,0 +1,10 @@
+mkdir veterinary_analysis
+cd veterinary_analysis
+mkdir -p static/images static/css static/js
+mkdir templates models data utils
+touch app.py config.py requirements.txt
+touch utils/__init__.py utils/data_processor.py utils/model_trainer.py
+touch static/diagnostic_data.json
+touch static/images/VetCare.jpg
+touch static/css/style.css
+touch static/js/main.js

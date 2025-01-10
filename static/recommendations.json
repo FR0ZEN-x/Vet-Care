@@ -1,0 +1,80 @@
+{
+    "species_categories": {
+        "Mammals": {
+            "species": ["Dog", "Cat", "Horse", "Elephant", "Tiger", "Lion", "Gorilla", "Dolphin", "Cheetah", "Rhinoceros"],
+            "general_care": [
+                "Regular veterinary check-ups",
+                "Species-appropriate diet",
+                "Adequate exercise space"
+            ]
+        },
+        "Birds": {
+            "species": ["Parrot", "Eagle", "Penguin", "Chicken", "Peacock", "Owl", "Flamingo", "Hummingbird", "Swan", "Toucan"],
+            "general_care": [
+                "Clean cage daily",
+                "Fresh water and food",
+                "Environmental enrichment"
+            ]
+        },
+        "Reptiles": {
+            "species": ["Snake", "Turtle", "Lizard", "Crocodile", "Iguana", "Gecko", "Chameleon", "Tortoise", "Alligator", "Monitor Lizard"],
+            "general_care": [
+                "Proper temperature gradient",
+                "UVB lighting",
+                "Humidity control"
+            ]
+        },
+        "Aquatic": {
+            "species": ["Goldfish", "Shark", "Clownfish", "Seahorse", "Angelfish", "Betta", "Koi", "Guppy", "Octopus", "Stingray"],
+            "general_care": [
+                "Water quality monitoring",
+                "Regular filter maintenance",
+                "Appropriate water temperature"
+            ]
+        }
+    },
+    "Dog": {
+        "diet_suggestions": [
+            "High-quality commercial dog food",
+            "Fresh water always available",
+            "Age-appropriate portions",
+            "Breed-specific nutrition"
+        ],
+        "diet_restrictions": [
+            "No chocolate",
+            "No grapes/raisins",
+            "No onions/garlic",
+            "No xylitol-containing foods"
+        ],
+        "basic_tests": [
+            "Physical examination",
+            "Blood count",
+            "Heartworm test",
+            "Fecal analysis"
+        ],
+        "advanced_tests": [
+            "X-rays",
+            "Urinalysis",
+            "Thyroid function",
+            "Cardiac evaluation"
+        ],
+        "environment": [
+            "Regular exercise",
+            "Clean living space",
+            "Mental stimulation",
+            "Social interaction"
+        ],
+        "breed_specific": {
+            "small_breeds": [
+                "Dental care emphasis",
+                "Joint health monitoring",
+                "Weight management"
+            ],
+            "large_breeds": [
+                "Hip/elbow monitoring",
+                "Controlled exercise",
+                "Growth rate monitoring"
+            ]
+        }
+    }
+} 

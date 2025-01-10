@@ -1,0 +1,4 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: eventlet in c:\users\shaik\appdata\roaming\python\python313\site-packages (0.38.1)
+Requirement already satisfied: dnspython>=1.15.0 in c:\users\shaik\appdata\roaming\python\python313\site-packages (from eventlet) (2.7.0)
+Requirement already satisfied: greenlet>=1.0 in c:\users\shaik\appdata\roaming\python\python313\site-packages (from eventlet) (3.1.1)

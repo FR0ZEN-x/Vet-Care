@@ -1,0 +1,6 @@
+Patient_ID,Name,Breed,Age,Weight_kg,Gender,Symptoms,Heart_Rate_bpm,Body_Temperature_C,Activity_Level,Diet,Vaccination_Status,Known_Allergies,Recent_Illnesses,Medications,Predicted_Disease,Risk_Level,Veterinary_Recommendations
+1,Buddy,Labrador,5,30,Male,Limping;Loss of appetite,85,38.5,Moderate,Dry kibble;Chicken,Up-to-date,None,Arthritis,Pain reliever,Arthritis,Medium,Regular exercise and weight control
+2,Bella,Beagle,3,12,Female,Fever;Coughing,95,39.2,Low,Wet food;Rice,Up-to-date,Pollen,Respiratory infection,Antibiotics,Infection,High,Antibiotic course and rest
+3,Charlie,Poodle,8,25,Male,Excessive thirst;Lethargy,80,37.9,High,Dry kibble;Fish,Delayed,Wheat,None,None,Diabetes,Medium,Monitor blood sugar levels
+4,Luna,Bulldog,6,20,Female,Vomiting;Diarrhea,90,39.5,Low,Homemade food;Vegetables,Up-to-date,None,Gastrointestinal upset,Anti-nausea medication,Gastroenteritis,High,Hydration and bland diet
+5,Max,German Shepherd,4,35,Male,Hair loss;Skin rash,88,38.8,Moderate,Dry kibble;Beef,Up-to-date,Beef,Skin infection,Antifungal cream,Dermatitis,Low,Medicated baths and skin care

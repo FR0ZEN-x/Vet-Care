@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veterinary Health Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .visualization {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .visualization img {
+            max-width: 100%;
+            height: auto;
+        }
+        .recommendation-card {
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .vital-signs {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .alert-warning {
+            background-color: #fff3cd;
+            border-color: #ffecb5;
+        }
+        body {
+            background-color: #ACA4BB;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card {
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .card-header {
+            background-color: #6B6175;
+            color: white;
+        }
+        .btn-primary {
+            background-color: #6B6175;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #4A4453;
+        }
+        .navbar {
+            background-color: #4A4453;
+            margin-bottom: 2rem;
+        }
+        .navbar-brand {
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">VetCare</a>
+            <div class="navbar-nav">
+                <a class="nav-link text-white" href="/">Home</a>
+                <a class="nav-link text-white" href="/main">Health Analysis</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Veterinary Health Analysis</h1>
+        
+        <!-- Prediction Form -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Health Assessment</h3>
+            </div>
+            <div class="card-body">
+                <form id="predictionForm">
+                    <!-- Basic Information -->
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="species" class="form-label">Species</label>
+                            <select class="form-select" id="species" required>
+                                <option value="Dog">Dog</option>
+                                <option value="Cat">Cat</option>
+                                <option value="Horse">Horse</option>
+                                <option value="Bird">Bird</option>
+                                <option value="Reptile">Reptile</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="age" class="form-label">Age (years)</label>
+                            <input type="number" class="form-control" id="age" required min="0" step="0.1">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="weight" class="form-label">Weight (kg)</label>
+                            <input type="number" class="form-control" id="weight" required min="0.1" step="0.1">
+                        </div>
+                    </div>
+
+                    <!-- Vital Signs -->
+                    <div class="vital-signs mb-3">
+                        <h4>Vital Signs (Optional)</h4>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="heart_rate" class="form-label">Heart Rate (bpm)</label>
+                                <input type="number" class="form-control" id="heart_rate">
+                                <small class="text-muted" id="heart_rate_range"></small>
+                                <div class="form-text">Optional: Leave blank if unknown</div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="respiratory_rate" class="form-label">Respiratory Rate (bpm)</label>
+                                <input type="number" class="form-control" id="respiratory_rate">
+                                <small class="text-muted" id="respiratory_rate_range"></small>
+                                <div class="form-text">Optional: Leave blank if unknown</div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="temperature" class="form-label">Temperature (°C)</label>
+                                <input type="number" class="form-control" id="temperature" required step="0.1">
+                                <small class="text-muted" id="temperature_range"></small>
+                            </div>
+                        </div>
+                        <div id="vitalSignsWarnings" class="mt-2"></div>
+                    </div>
+
+                    <!-- Additional Health Metrics -->
+                    <div class="mb-3">
+                        <h4>Additional Health Metrics</h4>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="breed" class="form-label">Breed (Optional)</label>
+                                <select class="form-select" id="breed">
+                                    <option value="">Unknown/Not Specified</option>
+                                    <!-- Will be populated based on species -->
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="diet_type" class="form-label">Diet Type</label>
+                                <select class="form-select" id="diet_type" required>
+                                    <option value="Premium Commercial">Premium Commercial</option>
+                                    <option value="Basic Commercial">Basic Commercial</option>
+                                    <option value="Home-Prepared">Home-Prepared</option>
+                                    <option value="Raw Diet">Raw Diet</option>
+                                    <option value="Prescription">Prescription</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="activity_level" class="form-label">Activity Level</label>
+                                <select class="form-select" id="activity_level" required>
+                                    <option value="Very Active">Very Active</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="Sedentary">Sedentary</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="living_environment" class="form-label">Living Environment</label>
+                                <select class="form-select" id="living_environment" required>
+                                    <option value="Indoor Only">Indoor Only</option>
+                                    <option value="Outdoor Only">Outdoor Only</option>
+                                    <option value="Mixed">Mixed</option>
+                                    <option value="Controlled Environment">Controlled Environment</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="vaccination_status" class="form-label">Vaccination Status</label>
+                                <select class="form-select" id="vaccination_status" required>
+                                    <option value="Up to Date">Up to Date</option>
+                                    <option value="Partially Vaccinated">Partially Vaccinated</option>
+                                    <option value="Overdue">Overdue</option>
+                                    <option value="Not Vaccinated">Not Vaccinated</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Indicators -->
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="hydration" class="form-label">Hydration Status</label>
+                            <select class="form-select" id="hydration" required>
+                                <option value="Normal">Normal</option>
+                                <option value="Mild Dehydration">Mild Dehydration</option>
+                                <option value="Moderate Dehydration">Moderate Dehydration</option>
+                                <option value="Severe Dehydration">Severe Dehydration</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Analyze Health</button>
+                </form>
+
+                <!-- Results Section -->
+                <div id="predictionResult" class="mt-4"></div>
+                <div id="healthRecommendations" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Update the vital signs ranges to include all species
+        const speciesVitalSigns = {
+            'Dog': {
+                heart_rate: { min: 60, max: 140 },
+                respiratory_rate: { min: 10, max: 30 },
+                temperature: { min: 37.5, max: 39.2 }
+            },
+            'Cat': {
+                heart_rate: { min: 120, max: 140 },
+                respiratory_rate: { min: 20, max: 30 },
+                temperature: { min: 38.0, max: 39.2 }
+            },
+            'Horse': {
+                heart_rate: { min: 28, max: 44 },
+                respiratory_rate: { min: 8, max: 16 },
+                temperature: { min: 37.5, max: 38.5 }
+            },
+            'Elephant': {
+                heart_rate: { min: 25, max: 35 },
+                respiratory_rate: { min: 4, max: 8 },
+                temperature: { min: 36.0, max: 37.5 }
+            },
+            'Tiger': {
+                heart_rate: { min: 60, max: 100 },
+                respiratory_rate: { min: 15, max: 30 },
+                temperature: { min: 37.5, max: 39.0 }
+            },
+            'Lion': {
+                heart_rate: { min: 60, max: 100 },
+                respiratory_rate: { min: 15, max: 30 },
+                temperature: { min: 37.5, max: 39.0 }
+            },
+            'Cheetah': {
+                heart_rate: { min: 120, max: 170 },
+                respiratory_rate: { min: 20, max: 30 },
+                temperature: { min: 37.5, max: 39.0 }
+            },
+            'Parrot': {
+                heart_rate: { min: 340, max: 600 },
+                respiratory_rate: { min: 25, max: 45 },
+                temperature: { min: 39.5, max: 42.5 }
+            },
+            'Snake': {
+                heart_rate: { min: 30, max: 80 },
+                respiratory_rate: { min: 4, max: 8 },
+                temperature: { min: 28.0, max: 32.0 }
+            },
+            'Goldfish': {
+                heart_rate: { min: 60, max: 120 },
+                respiratory_rate: { min: 50, max: 85 },
+                temperature: { min: 18.0, max: 22.0 }
+            }
+            // Add other species as needed...
+        };
+
+        // Add to the existing script section
+        const breeds = {
+            'Dog': ['Labrador', 'German Shepherd', 'Golden Retriever', 'Bulldog', 'Poodle'],
+            'Cat': ['Persian', 'Siamese', 'Maine Coon', 'Bengal', 'Ragdoll'],
+            'Horse': ['Arabian', 'Thoroughbred', 'Quarter Horse', 'Appaloosa'],
+            'Bird': ['Parakeet', 'Cockatiel', 'Macaw', 'African Grey'],
+            'Reptile': ['Bearded Dragon', 'Ball Python', 'Green Iguana', 'Leopard Gecko']
+        };
+
+        // Update breeds when species changes
+        document.getElementById('species').addEventListener('change', function() {
+            const speciesBreeds = breeds[this.value] || [];
+            const breedSelect = document.getElementById('breed');
+            breedSelect.innerHTML = speciesBreeds.map(breed => 
+                `<option value="${breed}">${breed}</option>`
+            ).join('');
+        });
+
+        // Update the form submission handler
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            try {
+                const formData = {
+                    Species: document.getElementById('species').value,
+                    Breed: document.getElementById('breed').value || null,
+                    Age: parseFloat(document.getElementById('age').value),
+                    Weight: parseFloat(document.getElementById('weight').value),
+                    Heart_Rate: document.getElementById('heart_rate').value ? 
+                        parseFloat(document.getElementById('heart_rate').value) : null,
+                    Respiratory_Rate: document.getElementById('respiratory_rate').value ? 
+                        parseFloat(document.getElementById('respiratory_rate').value) : null,
+                    Temperature: parseFloat(document.getElementById('temperature').value),
+                    hydration_status: document.getElementById('hydration').value,
+                    Diet_Type: document.getElementById('diet_type').value,
+                    Activity_Level: document.getElementById('activity_level').value,
+                    Living_Environment: document.getElementById('living_environment').value,
+                    Vaccination_Status: document.getElementById('vaccination_status').value
+                };
+
+                // Remove references to removed fields
+                document.getElementById('heart_rate').removeAttribute('required');
+                document.getElementById('respiratory_rate').removeAttribute('required');
+
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+
+                displayResults(result);
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('predictionResult').innerHTML = `
+                    <div class="alert alert-danger">
+                        <h4>Error</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        });
+
+        function displayResults(result) {
+            const alertClass = {
+                'Healthy': 'alert-success',
+                'Minor Issue': 'alert-info',
+                'Requires Treatment': 'alert-warning',
+                'Critical': 'alert-danger'
+            }[result.prediction.status] || 'alert-primary';
+
+            document.getElementById('predictionResult').innerHTML = `
+                <div class="alert ${alertClass}">
+                    <h4>Health Assessment Result</h4>
+                    <p>Status: <strong>${result.prediction.status}</strong></p>
+                    <p>Description: ${result.prediction.description}</p>
+                    <p>Confidence: ${result.prediction.confidence}</p>
+                    <p>Health Score: ${result.diagnostic_insights.health_score}</p>
+                </div>
+            `;
+
+            if (result.recommendations) {
+                const recommendationsHtml = `
+                    <div class="recommendation-card">
+                        <h4>Recommendations</h4>
+                        
+                        <!-- Immediate Actions -->
+                        <div class="mb-4">
+                            <h5 class="text-danger">Immediate Actions</h5>
+                            <ul class="list-group">
+                                ${result.recommendations.immediate_actions.map(item => `
+                                    <li class="list-group-item ${item.urgency === 'High' ? 'list-group-item-danger' : 
+                                                                item.urgency === 'Medium' ? 'list-group-item-warning' : 
+                                                                'list-group-item-info'}">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span>${item.recommendation}</span>
+                                            <span class="badge bg-${item.urgency === 'High' ? 'danger' : 
+                                                              item.urgency === 'Medium' ? 'warning' : 
+                                                              'info'}">${item.urgency}</span>
+                                        </div>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <!-- Lifestyle Changes -->
+                        <div class="mb-4">
+                            <h5 class="text-primary">Lifestyle Changes</h5>
+                            <ul class="list-group">
+                                ${result.recommendations.lifestyle_changes.map(item => `
+                                    <li class="list-group-item">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span>${item.recommendation}</span>
+                                            <span class="badge bg-${item.urgency === 'High' ? 'danger' : 
+                                                              item.urgency === 'Medium' ? 'warning' : 
+                                                              'info'}">${item.urgency}</span>
+                                        </div>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <!-- Monitoring Plan -->
+                        <div class="mb-4">
+                            <h5 class="text-info">Monitoring Plan</h5>
+                            <ul class="list-group">
+                                ${result.recommendations.monitoring_plan.map(item => `
+                                    <li class="list-group-item">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span>${item.recommendation}</span>
+                                            <span class="badge bg-${item.urgency === 'High' ? 'danger' : 
+                                                              item.urgency === 'Medium' ? 'warning' : 
+                                                              'info'}">${item.urgency}</span>
+                                        </div>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <!-- Veterinary Care -->
+                        <div class="mb-4">
+                            <h5 class="text-success">Veterinary Care</h5>
+                            <ul class="list-group">
+                                ${result.recommendations.veterinary_care.map(item => `
+                                    <li class="list-group-item">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span>${item.recommendation}</span>
+                                            <span class="badge bg-${item.urgency === 'High' ? 'danger' : 
+                                                              item.urgency === 'Medium' ? 'warning' : 
+                                                              'info'}">${item.urgency}</span>
+                                        </div>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('healthRecommendations').innerHTML = recommendationsHtml;
+            }
+        }
+
+        // Update vital signs ranges when species changes
+        document.getElementById('species').addEventListener('change', function() {
+            const species = this.value;
+            const ranges = speciesVitalSigns[species] || {};
+            
+            if (ranges.heart_rate) {
+                document.getElementById('heart_rate_range').textContent = 
+                    `Normal range: ${ranges.heart_rate.min}-${ranges.heart_rate.max} bpm`;
+            }
+            if (ranges.respiratory_rate) {
+                document.getElementById('respiratory_rate_range').textContent = 
+                    `Normal range: ${ranges.respiratory_rate.min}-${ranges.respiratory_rate.max} bpm`;
+            }
+            if (ranges.temperature) {
+                document.getElementById('temperature_range').textContent = 
+                    `Normal range: ${ranges.temperature.min}-${ranges.temperature.max}°C`;
+            }
+        });
+
+        // Initialize ranges for default species
+        document.getElementById('species').dispatchEvent(new Event('change'));
+
+        // Initialize breeds for default species
+        document.getElementById('species').dispatchEvent(new Event('change'));
+
+        // Update the species categories and data
+        const speciesCategories = {
+            'Mammals': {
+                description: 'Warm-blooded vertebrates characterized by fur/hair',
+                species: [
+                    { name: 'Dog', description: 'Domestic canine' },
+                    { name: 'Cat', description: 'Domestic feline' },
+                    { name: 'Horse', description: 'Large equine' },
+                    { name: 'Tiger', description: 'Large feline predator' },
+                    { name: 'Lion', description: 'Social big cat' },
+                    { name: 'Cheetah', description: 'Fast feline predator' },
+                    { name: 'Elephant', description: 'Large terrestrial mammal' }
+                ]
+            },
+            'Birds': {
+                description: 'Feathered, winged vertebrates',
+                species: [
+                    { name: 'Parrot', description: 'Colorful tropical bird' },
+                    { name: 'Eagle', description: 'Large bird of prey' }
+                ]
+            },
+            'Reptiles': {
+                description: 'Cold-blooded vertebrates with scales',
+                species: [
+                    { name: 'Snake', description: 'Elongated reptile' },
+                    { name: 'Turtle', description: 'Shelled reptile' }
+                ]
+            },
+            'Aquatic': {
+                description: 'Water-dwelling vertebrates',
+                species: [
+                    { name: 'Goldfish', description: 'Common ornamental fish' },
+                    { name: 'Shark', description: 'Marine predator' }
+                ]
+            }
+        };
+
+        // Update the species dropdown population function
+        function populateSpeciesDropdown() {
+            const speciesSelect = document.getElementById('species');
+            speciesSelect.innerHTML = '';
+
+            Object.entries(speciesCategories).forEach(([category, data]) => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = category;
+                optgroup.title = data.description;
+
+                data.species.forEach(species => {
+                    const option = document.createElement('option');
+                    option.value = species.name;
+                    option.textContent = species.name;
+                    option.title = species.description;
+                    optgroup.appendChild(option);
+                });
+
+                speciesSelect.appendChild(optgroup);
+            });
+        }
+
+        // Update vital signs ranges when species changes
+        function updateVitalRanges() {
+            const species = document.getElementById('species').value;
+            const ranges = speciesVitalSigns[species];
+            
+            if (ranges) {
+                // Update heart rate range
+                const hrRange = document.getElementById('heart_rate_range');
+                hrRange.textContent = `Normal range: ${ranges.heart_rate.min}-${ranges.heart_rate.max} bpm`;
+                hrRange.classList.remove('text-danger');
+                
+                // Update respiratory rate range
+                const rrRange = document.getElementById('respiratory_rate_range');
+                rrRange.textContent = `Normal range: ${ranges.respiratory_rate.min}-${ranges.respiratory_rate.max} bpm`;
+                rrRange.classList.remove('text-danger');
+                
+                // Update temperature range
+                const tempRange = document.getElementById('temperature_range');
+                tempRange.textContent = `Normal range: ${ranges.temperature.min}-${ranges.temperature.max}°C`;
+                tempRange.classList.remove('text-danger');
+            } else {
+                // Handle unknown species
+                ['heart_rate_range', 'respiratory_rate_range', 'temperature_range'].forEach(id => {
+                    const element = document.getElementById(id);
+                    element.textContent = 'Range not available for this species';
+                    element.classList.add('text-danger');
+                });
+            }
+
+            // Update form validation ranges
+            const heartRateInput = document.getElementById('heart_rate');
+            const respRateInput = document.getElementById('respiratory_rate');
+            const tempInput = document.getElementById('temperature');
+
+            if (ranges) {
+                heartRateInput.min = ranges.heart_rate.min;
+                heartRateInput.max = ranges.heart_rate.max;
+                
+                respRateInput.min = ranges.respiratory_rate.min;
+                respRateInput.max = ranges.respiratory_rate.max;
+                
+                tempInput.min = ranges.temperature.min;
+                tempInput.max = ranges.temperature.max;
+            }
+        }
+
+        // Add validation for vital signs
+        function validateVitalSigns() {
+            const species = document.getElementById('species').value;
+            const ranges = speciesVitalSigns[species];
+            const warningsDiv = document.getElementById('vitalSignsWarnings');
+            
+            if (!ranges) {
+                warningsDiv.innerHTML = '<div class="alert alert-warning">No vital sign ranges available for this species</div>';
+                return true; // Allow form submission
+            }
+
+            const heartRate = document.getElementById('heart_rate').value;
+            const respRate = document.getElementById('respiratory_rate').value;
+            const temp = document.getElementById('temperature').value;
+
+            let isValid = true;
+            let warnings = [];
+
+            if (heartRate) {
+                const hr = parseFloat(heartRate);
+                if (hr < ranges.heart_rate.min || hr > ranges.heart_rate.max) {
+                    warnings.push(`Heart rate (${hr}) is outside normal range for ${species} (${ranges.heart_rate.min}-${ranges.heart_rate.max} bpm)`);
+                    isValid = false;
+                }
+            }
+
+            if (respRate) {
+                const rr = parseFloat(respRate);
+                if (rr < ranges.respiratory_rate.min || rr > ranges.respiratory_rate.max) {
+                    warnings.push(`Respiratory rate (${rr}) is outside normal range for ${species} (${ranges.respiratory_rate.min}-${ranges.respiratory_rate.max} bpm)`);
+                    isValid = false;
+                }
+            }
+
+            if (temp) {
+                const t = parseFloat(temp);
+                if (t < ranges.temperature.min || t > ranges.temperature.max) {
+                    warnings.push(`Temperature (${t}) is outside normal range for ${species} (${ranges.temperature.min}-${ranges.temperature.max}°C)`);
+                    isValid = false;
+                }
+            }
+
+            // Update warnings display
+            warningsDiv.innerHTML = warnings.length > 0 
+                ? warnings.map(w => `<div class="alert alert-warning">${w}</div>`).join('')
+                : '';
+
+            return isValid;
+        }
+
+        // Update the form submission handler
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Validate vital signs before submission
+            if (!validateVitalSigns()) {
+                const proceed = confirm('Some vital signs are outside normal ranges. Continue anyway?');
+                if (!proceed) {
+                    return;
+                }
+            }
+
+            try {
+                const formData = {
+                    Species: document.getElementById('species').value,
+                    Breed: document.getElementById('breed').value || null,
+                    Age: parseFloat(document.getElementById('age').value),
+                    Weight: parseFloat(document.getElementById('weight').value),
+                    Heart_Rate: document.getElementById('heart_rate').value ? 
+                        parseFloat(document.getElementById('heart_rate').value) : null,
+                    Respiratory_Rate: document.getElementById('respiratory_rate').value ? 
+                        parseFloat(document.getElementById('respiratory_rate').value) : null,
+                    Temperature: parseFloat(document.getElementById('temperature').value),
+                    hydration_status: document.getElementById('hydration').value,
+                    Diet_Type: document.getElementById('diet_type').value,
+                    Activity_Level: document.getElementById('activity_level').value,
+                    Living_Environment: document.getElementById('living_environment').value,
+                    Vaccination_Status: document.getElementById('vaccination_status').value
+                };
+
+                // Remove references to removed fields
+                document.getElementById('heart_rate').removeAttribute('required');
+                document.getElementById('respiratory_rate').removeAttribute('required');
+
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+
+                displayResults(result);
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('predictionResult').innerHTML = `
+                    <div class="alert alert-danger">
+                        <h4>Error</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        });
+
+        // Initialize when document loads
+        document.addEventListener('DOMContentLoaded', function() {
+            populateSpeciesDropdown();
+            
+            // Add event listeners
+            document.getElementById('species').addEventListener('change', function() {
+                updateVitalRanges();
+                updateBreeds();
+            });
+            
+            // Initial updates
+            updateVitalRanges();
+            updateBreeds();
+        });
+
+        // Update the breeds function
+        function updateBreeds() {
+            const species = document.getElementById('species').value;
+            const speciesBreeds = breeds[species] || [];
+            const breedSelect = document.getElementById('breed');
+            
+            // Clear current options
+            breedSelect.innerHTML = '<option value="">Unknown/Not Specified</option>';
+            
+            // Add new breed options
+            speciesBreeds.forEach(breed => {
+                const option = document.createElement('option');
+                option.value = breed;
+                option.textContent = breed;
+                breedSelect.appendChild(option);
+            });
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,121 @@
+{
+    "Dog": {
+        "Lethargy": [
+            {
+                "name": "Fatigue",
+                "causes": ["Overexertion", "Dehydration", "Anemia"],
+                "severity": "Minor",
+                "age_range": [0, 20],
+                "breed_specific": false,
+                "recommendations": [
+                    "Ensure adequate rest",
+                    "Monitor water intake",
+                    "Check gum color"
+                ]
+            },
+            {
+                "name": "Heart Condition",
+                "causes": ["Cardiac issues", "Age-related fatigue"],
+                "severity": "Moderate",
+                "age_range": [7, 20],
+                "breed_specific": true,
+                "affected_breeds": ["Boxer", "Doberman", "Great Dane"],
+                "recommendations": [
+                    "Cardiac examination",
+                    "Limit strenuous exercise",
+                    "Monitor breathing rate"
+                ]
+            }
+        ],
+        "Coughing": [
+            {
+                "name": "Kennel Cough",
+                "causes": ["Bacterial infection", "Viral infection"],
+                "severity": "Moderate",
+                "age_range": [0, 20],
+                "breed_specific": false,
+                "recommendations": [
+                    "Isolate from other dogs",
+                    "Humidify environment",
+                    "Monitor temperature"
+                ]
+            },
+            {
+                "name": "Chronic Bronchitis",
+                "causes": ["Allergies", "Chronic inflammation"],
+                "severity": "Severe",
+                "age_range": [5, 20],
+                "breed_specific": true,
+                "affected_breeds": ["Pug", "Bulldog", "Pekingese"],
+                "recommendations": [
+                    "Avoid irritants",
+                    "Regular nebulization",
+                    "Monitor breathing effort"
+                ]
+            }
+        ]
+    },
+    "Cat": {
+        "Lethargy": [
+            {
+                "name": "Fatigue",
+                "causes": ["Stress", "Illness", "Depression"],
+                "severity": "Minor",
+                "age_range": [0, 20],
+                "breed_specific": false,
+                "recommendations": [
+                    "Ensure quiet environment",
+                    "Monitor food intake",
+                    "Check for environmental changes"
+                ]
+            }
+        ],
+        "Loss of Appetite": [
+            {
+                "name": "Dental Disease",
+                "causes": ["Tooth pain", "Gum inflammation"],
+                "severity": "Moderate",
+                "age_range": [2, 20],
+                "breed_specific": false,
+                "recommendations": [
+                    "Dental examination",
+                    "Soft food diet",
+                    "Monitor weight"
+                ]
+            }
+        ]
+    },
+    "Horse": {
+        "Colic": [
+            {
+                "name": "Digestive Distress",
+                "causes": ["Diet change", "Dehydration", "Parasites"],
+                "severity": "Severe",
+                "age_range": [0, 30],
+                "breed_specific": false,
+                "recommendations": [
+                    "Immediate veterinary care",
+                    "No food until examined",
+                    "Monitor vital signs"
+                ]
+            }
+        ]
+    },
+    "Bird": {
+        "Lethargy": [
+            {
+                "name": "Respiratory Infection",
+                "causes": ["Draft exposure", "Bacterial infection"],
+                "severity": "Moderate",
+                "age_range": [0, 20],
+                "species_specific": true,
+                "affected_species": ["Parrot", "Cockatiel"],
+                "recommendations": [
+                    "Maintain warm environment",
+                    "Isolate from other birds",
+                    "Monitor breathing"
+                ]
+            }
+        ]
+    }
+} 

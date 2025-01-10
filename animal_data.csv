@@ -1,0 +1,3 @@
+Animal_ID,Species,Age,Gender,Weight,Heart_Rate,Respiratory_Rate,Temperature,Diet_Type,Habitat_Quality,Genetic_Risk,Medical_History,Symptoms
+A0001,Dog,5,Male,25,80,20,38.5,Balanced,Good,Low,None,Lethargy
+A0002,Cat,3,Female,4,120,25,38.2,Excellent,Good,Low,None,
