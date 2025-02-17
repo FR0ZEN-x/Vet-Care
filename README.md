@@ -20,31 +20,38 @@ VetCare is an intelligent veterinary health analysis system designed to help vet
 ## Installation
 
 1. Clone the repository:
+```bash
 git clone https://github.com/yourusername/vetcare.git
 cd vetcare
+```
 
 2. Create a virtual environment:
+```bash
 python -m venv venv
-venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
 3. Install dependencies:
+```bash
 pip install -r requirements.txt
+```
 
 ## Project Structure
-
+```
 vetcare/
 ├── app.py              # Main Flask application
 ├── species_config.py   # Species configuration and parameters
 ├── species_metrics.py  # Metrics analysis implementation
 ├── disease_analysis.py # Disease risk assessment
-├── templates/         # HTML templates
+├── templates/          # HTML templates
 │   ├── index.html
 │   └── landing.html
-├── static/           # Static files (CSS, JS, images)
-├── requirements.txt  # Project dependencies
-└── README.md        # Project documentation
+├── static/            # Static files (CSS, JS, images)
+├── requirements.txt   # Project dependencies
+└── README.md         # Project documentation
+```
 
-## API Endpoints
+## API Documentation
 
 ### GET /api/species-info
 Returns information about supported species and categories.
@@ -67,16 +74,10 @@ Request body example:
 ## Running the Application
 
 Development mode:
-set FLASK_APP=app.py
-set FLASK_DEBUG=1
-python app.py or flask run or python -m flask run (If using a virtual environment)
-
-Production mode:
-gunicorn app:app
-
-## Testing
-Run the test suite:
-pytest
+```bash
+export FLASK_APP=app.py        # On Windows: set FLASK_APP=app.py
+export FLASK_DEBUG=1          # On Windows: set FLASK_DEBUG=1
+flask run
 ```
 
 ## Contributing
@@ -87,7 +88,6 @@ pytest
 5. Create a Pull Request
 
 ## Author
-
 Shaik Abdul Munawar
 
 [LinkedIn Profile](https://www.linkedin.com/in/shaik-abdul-munawar-b35821284)
